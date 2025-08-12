@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"tank.io/internal/core"
+	"tank.io/internal/transport"
 )
 
 func main() {
@@ -19,6 +22,10 @@ func main() {
 	port := ":8080"
 	fmt.Printf("Сервер запущен на http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
+
+	// Запуск игрового сервера (обслуживает игроков)
+	game := core.NewGameServer(transport.NewWebSocketTransport())
+	game.Start("http://localhost:8080")
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {

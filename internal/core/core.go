@@ -1,10 +1,15 @@
-package main
+package core
+
+import (
+	"tank.io/internal/logic"
+	"tank.io/internal/transport"
+)
 
 type GameServer struct {
-	transport Transport
+	transport transport.Transport
 }
 
-func NewGameServer(transport Transport) *GameServer {
+func NewGameServer(transport transport.Transport) *GameServer {
 	return &GameServer{
 		transport: transport,
 	}
@@ -25,7 +30,7 @@ func (s *GameServer) Start(address string) error {
 		}
 
 		// Обработка данных
-		response := processGameData(data)
+		response := logic.ProcessGameData(data)
 
 		// Отправка ответа
 		if err := s.transport.Send(response); err != nil {
